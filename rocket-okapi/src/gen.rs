@@ -65,8 +65,8 @@ impl OpenApiGenerator {
 
     /// Obtain the internal `SchemaGenerator` object.
     #[must_use]
-    pub fn schema_generator(&self) -> &SchemaGenerator {
-        &self.schema_generator
+    pub fn schema_generator(&mut self) -> &mut SchemaGenerator {
+        &mut self.schema_generator
     }
 
     /// Return the component definition/schema of an object without any references.
