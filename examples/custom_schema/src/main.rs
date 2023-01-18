@@ -1,7 +1,7 @@
+use revolt_rocket_okapi::revolt_okapi::openapi3::OpenApi;
+use revolt_rocket_okapi::settings::UrlObject;
+use revolt_rocket_okapi::{mount_endpoints_and_merged_docs, rapidoc::*, swagger_ui::*};
 use rocket::{Build, Rocket};
-use rocket_okapi::okapi::openapi3::OpenApi;
-use rocket_okapi::settings::UrlObject;
-use rocket_okapi::{mount_endpoints_and_merged_docs, rapidoc::*, swagger_ui::*};
 
 mod error;
 mod message;
@@ -46,7 +46,7 @@ pub fn create_server() -> Rocket<Build> {
             }),
         );
 
-    let openapi_settings = rocket_okapi::settings::OpenApiSettings::default();
+    let openapi_settings = revolt_rocket_okapi::settings::OpenApiSettings::default();
     let custom_route_spec = (vec![], custom_openapi_spec());
     mount_endpoints_and_merged_docs! {
         building_rocket, "/v1".to_owned(), openapi_settings,
@@ -59,7 +59,7 @@ pub fn create_server() -> Rocket<Build> {
 }
 
 fn custom_openapi_spec() -> OpenApi {
-    use rocket_okapi::okapi::openapi3::*;
+    use revolt_rocket_okapi::revolt_okapi::openapi3::*;
     OpenApi {
         openapi: OpenApi::default_version(),
         info: Info {

@@ -1,10 +1,10 @@
+use revolt_rocket_okapi::openapi;
+use revolt_rocket_okapi::openapi_get_routes_spec;
+use revolt_rocket_okapi::revolt_okapi::openapi3::OpenApi;
+use revolt_rocket_okapi::revolt_okapi::schemars::{self, JsonSchema};
+use revolt_rocket_okapi::settings::OpenApiSettings;
 use rocket::form::FromForm;
 use rocket::{get, post, serde::json::Json};
-use rocket_okapi::okapi::openapi3::OpenApi;
-use rocket_okapi::okapi::schemars::{self, JsonSchema};
-use rocket_okapi::openapi;
-use rocket_okapi::openapi_get_routes_spec;
-use rocket_okapi::settings::OpenApiSettings;
 use serde::{Deserialize, Serialize};
 
 pub fn get_routes_and_docs(settings: &OpenApiSettings) -> (Vec<rocket::Route>, OpenApi) {

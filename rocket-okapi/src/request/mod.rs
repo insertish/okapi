@@ -95,7 +95,7 @@ pub use revolt_rocket_okapi_codegen::OpenApiFromRequest;
 ///
 /// If it does not quire any headers or parameters you can use the derive macro:
 /// ```rust,ignore
-/// use rocket_okapi::request::OpenApiFromRequest;
+/// use revolt_rocket_okapi::request::OpenApiFromRequest;
 ///
 /// #[derive(OpenApiFromRequest)]
 /// pub struct MyStructName;

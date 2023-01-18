@@ -1,18 +1,18 @@
 //! ------ ApiKey (in http header, query or cookie) ------
+use revolt_rocket_okapi::revolt_okapi;
+use revolt_rocket_okapi::revolt_okapi::openapi3::{
+    Object, Responses, SecurityRequirement, SecurityScheme, SecuritySchemeData,
+};
+use revolt_rocket_okapi::{
+    gen::OpenApiGenerator,
+    openapi,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+};
 use rocket::serde::json::Json;
 use rocket::{
     get,
     http::Status,
     request::{self, FromRequest, Outcome},
-};
-use rocket_okapi::okapi;
-use rocket_okapi::okapi::openapi3::{
-    Object, Responses, SecurityRequirement, SecurityScheme, SecuritySchemeData,
-};
-use rocket_okapi::{
-    gen::OpenApiGenerator,
-    openapi,
-    request::{OpenApiFromRequest, RequestHeaderInput},
 };
 
 pub struct ApiKey(String);
@@ -44,7 +44,7 @@ impl<'a> OpenApiFromRequest<'a> for ApiKey {
         _gen: &mut OpenApiGenerator,
         _name: String,
         _required: bool,
-    ) -> rocket_okapi::Result<RequestHeaderInput> {
+    ) -> revolt_rocket_okapi::Result<RequestHeaderInput> {
         // Setup global requirement for Security scheme
         let security_scheme = SecurityScheme {
             description: Some("Requires an API key to access, key is: `mykey`.".to_owned()),
@@ -72,8 +72,8 @@ impl<'a> OpenApiFromRequest<'a> for ApiKey {
 
     // Optionally add responses
     // Also see `main.rs` part of this.
-    fn get_responses(gen: &mut OpenApiGenerator) -> rocket_okapi::Result<Responses> {
-        use rocket_okapi::okapi::openapi3::RefOr;
+    fn get_responses(gen: &mut OpenApiGenerator) -> revolt_rocket_okapi::Result<Responses> {
+        use revolt_rocket_okapi::revolt_okapi::openapi3::RefOr;
         // Can switch between to the but both are checked if they compile correctly
         let use_method = "recommended";
         // It can return a "400 BadRequest" and a "401 Unauthorized"
@@ -86,7 +86,7 @@ impl<'a> OpenApiFromRequest<'a> for ApiKey {
             "recommended" => Ok(Responses {
                 // Recommended and most strait forward.
                 // And easy to add or remove new responses.
-                responses: okapi::map! {
+                responses: revolt_okapi::map! {
                     "400".to_owned() => RefOr::Object(crate::bad_request_response(gen)),
                     "401".to_owned() => RefOr::Object(crate::unauthorized_response(gen)),
                 },
@@ -114,14 +114,14 @@ impl<'a> OpenApiFromRequest<'a> for ApiKey {
                 let mut responses = Responses::default();
                 let schema = gen.json_schema::<crate::MyError>();
                 // Add "400 BadRequest"
-                rocket_okapi::util::add_schema_response(
+                revolt_rocket_okapi::util::add_schema_response(
                     &mut responses,
                     400,
                     "application/json",
                     schema.clone(),
                 )?;
                 // Add "401 Unauthorized"
-                rocket_okapi::util::add_schema_response(
+                revolt_rocket_okapi::util::add_schema_response(
                     &mut responses,
                     401,
                     "application/json",

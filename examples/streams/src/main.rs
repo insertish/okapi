@@ -10,8 +10,8 @@ use rocket::get;
 use rocket::response::stream::{ByteStream, Event, EventStream, ReaderStream, TextStream};
 use rocket::tokio::fs::File;
 use rocket::tokio::time::{self, Duration};
-use rocket_okapi::settings::UrlObject;
-use rocket_okapi::{openapi, openapi_get_routes, rapidoc::*, swagger_ui::*};
+use revolt_rocket_okapi::settings::UrlObject;
+use revolt_rocket_okapi::{openapi, openapi_get_routes, rapidoc::*, swagger_ui::*};
 
 #[openapi]
 #[get("/event_stream")]

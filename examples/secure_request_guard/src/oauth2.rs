@@ -1,18 +1,18 @@
 //! ------ OAuth 2.0 flows (authorizationCode, implicit, password, clientCredentials) ------
+use revolt_rocket_okapi::revolt_okapi;
+use revolt_rocket_okapi::revolt_okapi::openapi3::{
+    OAuthFlows, Object, SecurityRequirement, SecurityScheme, SecuritySchemeData,
+};
+use revolt_rocket_okapi::{
+    gen::OpenApiGenerator,
+    openapi,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+};
 use rocket::serde::json::{json, Json};
 use rocket::{
     get,
     http::Status,
     request::{self, FromRequest, Outcome},
-};
-use rocket_okapi::okapi;
-use rocket_okapi::okapi::openapi3::{
-    OAuthFlows, Object, SecurityRequirement, SecurityScheme, SecuritySchemeData,
-};
-use rocket_okapi::{
-    gen::OpenApiGenerator,
-    openapi,
-    request::{OpenApiFromRequest, RequestHeaderInput},
 };
 
 pub struct OAuth2AuthCode;
@@ -44,7 +44,7 @@ impl<'a> OpenApiFromRequest<'a> for OAuth2AuthCode {
         _gen: &mut OpenApiGenerator,
         _name: String,
         _required: bool,
-    ) -> rocket_okapi::Result<RequestHeaderInput> {
+    ) -> revolt_rocket_okapi::Result<RequestHeaderInput> {
         // Setup global requirement for Security scheme
         let security_scheme = SecurityScheme {
             description: Some(
@@ -63,7 +63,7 @@ impl<'a> OpenApiFromRequest<'a> for OAuth2AuthCode {
                         .to_owned(),
                     token_url: "https://demo.identityserver.io/connect/token".to_owned(),
                     refresh_url: None,
-                    scopes: okapi::map! {
+                    scopes: revolt_okapi::map! {
                         "openid".to_owned() => "Ability to access openid".to_owned(),
                         "profile".to_owned() => "Ability to access profile".to_owned(),
                         "email".to_owned() => "Ability to access email".to_owned(),
@@ -74,7 +74,7 @@ impl<'a> OpenApiFromRequest<'a> for OAuth2AuthCode {
                 },
             },
             // Add example data for RapiDoc
-            extensions: okapi::map! {
+            extensions: revolt_okapi::map! {
                 "x-client-id".to_owned() => json!("interactive.confidential"),
                 "x-client-secret".to_owned() => json!("secret"),
             },

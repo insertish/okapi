@@ -48,9 +48,9 @@ fn create_empty_route_operation_fn(route_fn: ItemFn) -> TokenStream {
     let fn_name = get_add_operation_fn_name(&route_fn.sig.ident);
     TokenStream::from(quote! {
         pub fn #fn_name(
-            _gen: &mut ::rocket_okapi::gen::OpenApiGenerator,
+            _gen: &mut ::revolt_rocket_okapi::gen::OpenApiGenerator,
             _op_id: String,
-        ) -> ::rocket_okapi::Result<()> {
+        ) -> ::revolt_rocket_okapi::Result<()> {
             Ok(())
         }
     })
@@ -139,7 +139,7 @@ fn create_route_operation_fn(
         };
         params_names_used.push(arg.to_owned());
         params.push(quote! {
-            <#ty as ::rocket_okapi::request::OpenApiFromParam>::path_parameter(gen, #arg.to_owned())?.into()
+            <#ty as ::revolt_rocket_okapi::request::OpenApiFromParam>::path_parameter(gen, #arg.to_owned())?.into()
         })
     }
     // Multi Path parameters: `/<path..>`
@@ -153,7 +153,7 @@ fn create_route_operation_fn(
         };
         params_names_used.push(arg.to_owned());
         params.push(quote! {
-            <#ty as ::rocket_okapi::request::OpenApiFromSegments>::path_multi_parameter(gen, #arg.to_owned())?.into()
+            <#ty as ::revolt_rocket_okapi::request::OpenApiFromSegments>::path_multi_parameter(gen, #arg.to_owned())?.into()
         })
     }
     // Query parameters: `/?<id>&<name>`
@@ -167,7 +167,7 @@ fn create_route_operation_fn(
         };
         params_names_used.push(arg.to_owned());
         params_nested_list.push(quote! {
-            <#ty as ::rocket_okapi::request::OpenApiFromForm>::form_multi_parameter(gen, #arg.to_owned(), true)?.into()
+            <#ty as ::revolt_rocket_okapi::request::OpenApiFromForm>::form_multi_parameter(gen, #arg.to_owned(), true)?.into()
         })
     }
     // Multi Query parameters: `/?<param..>`
@@ -180,7 +180,7 @@ fn create_route_operation_fn(
         };
         params_names_used.push(arg.to_owned());
         params_nested_list.push(quote! {
-            <#ty as ::rocket_okapi::request::OpenApiFromForm>::form_multi_parameter(gen, #arg.to_owned(), true)?.into()
+            <#ty as ::revolt_rocket_okapi::request::OpenApiFromForm>::form_multi_parameter(gen, #arg.to_owned(), true)?.into()
         })
     }
 
@@ -197,7 +197,7 @@ fn create_route_operation_fn(
             // Add parameter to list
             params_names_used.push(data_param.clone());
             quote! {
-                Some(<#ty as ::rocket_okapi::request::OpenApiFromData>::request_body(gen)?.into())
+                Some(<#ty as ::revolt_rocket_okapi::request::OpenApiFromData>::request_body(gen)?.into())
             }
         }
         None => quote! { None },
@@ -210,10 +210,10 @@ fn create_route_operation_fn(
         if !params_names_used.contains(arg) {
             params_names_used.push(arg.to_owned());
             params_request_guards.push(quote! {
-                <#ty as ::rocket_okapi::request::OpenApiFromRequest>::from_request_input(gen, #arg.to_owned(), true)?.into()
+                <#ty as ::revolt_rocket_okapi::request::OpenApiFromRequest>::from_request_input(gen, #arg.to_owned(), true)?.into()
             });
             request_guard_responses.push(quote! {
-                <#ty as ::rocket_okapi::request::OpenApiFromRequest>::get_responses(gen)?.into()
+                <#ty as ::revolt_rocket_okapi::request::OpenApiFromRequest>::get_responses(gen)?.into()
             });
         }
     }
@@ -244,14 +244,14 @@ fn create_route_operation_fn(
 
     TokenStream::from(quote! {
         pub fn #fn_name(
-            gen: &mut ::rocket_okapi::gen::OpenApiGenerator,
+            gen: &mut ::revolt_rocket_okapi::gen::OpenApiGenerator,
             op_id: String,
-        ) -> ::rocket_okapi::Result<()> {
-            let mut responses = <#return_type as ::rocket_okapi::response::OpenApiResponder>::responses(gen)?;
+        ) -> ::revolt_rocket_okapi::Result<()> {
+            let mut responses = <#return_type as ::revolt_rocket_okapi::response::OpenApiResponder>::responses(gen)?;
             // Add responses from Request Guards.
             let request_guard_responses = vec![#(#request_guard_responses),*];
             for request_guard_response in request_guard_responses {
-                ::rocket_okapi::okapi::merge::merge_responses(&mut responses, &request_guard_response)?;
+                ::revolt_rocket_okapi::revolt_okapi::merge::merge_responses(&mut responses, &request_guard_response)?;
             }
 
             let request_body = #request_body;
@@ -260,9 +260,9 @@ fn create_route_operation_fn(
 
             // Combine all parameters from all sources
             // Add all from `path_params` and `path_multi_param`
-            let mut parameters: Vec<::rocket_okapi::okapi::openapi3::RefOr<::rocket_okapi::okapi::openapi3::Parameter>> = vec![#(#params),*];
+            let mut parameters: Vec<::revolt_rocket_okapi::revolt_okapi::openapi3::RefOr<::revolt_rocket_okapi::revolt_okapi::openapi3::Parameter>> = vec![#(#params),*];
             // Add all from `query_params` and `query_multi_params`
-            let parameters_nested_list: Vec<Vec<::rocket_okapi::okapi::openapi3::Parameter>> = vec![#(#params_nested_list),*];
+            let parameters_nested_list: Vec<Vec<::revolt_rocket_okapi::revolt_okapi::openapi3::Parameter>> = vec![#(#params_nested_list),*];
             for inner_list in parameters_nested_list{
                 for item in inner_list{
                     // convert every item from `Parameter` to `RefOr<Parameter>``
@@ -272,9 +272,9 @@ fn create_route_operation_fn(
             // Body Data does not add any parameters
 
             // Add all Request Guards
-            let request_guards_route: Vec<::rocket_okapi::request::RequestHeaderInput> = vec![#(#params_request_guards),*];
+            let request_guards_route: Vec<::revolt_rocket_okapi::request::RequestHeaderInput> = vec![#(#params_request_guards),*];
             for request_guard_route in request_guards_route {
-                use ::rocket_okapi::request::RequestHeaderInput;
+                use ::revolt_rocket_okapi::request::RequestHeaderInput;
                 match request_guard_route {
                     // Add Parameters
                     RequestHeaderInput::Parameter(p) => {
@@ -299,10 +299,10 @@ fn create_route_operation_fn(
                 Some(security_requirements)
             };
             // Add route/endpoint to OpenApi object.
-            gen.add_operation(::rocket_okapi::OperationInfo {
+            gen.add_operation(::revolt_rocket_okapi::OperationInfo {
                 path: #path.to_owned(),
                 method: ::rocket::http::Method::#method,
-                operation: ::rocket_okapi::okapi::openapi3::Operation {
+                operation: ::revolt_rocket_okapi::revolt_okapi::openapi3::Operation {
                     operation_id: Some(op_id),
                     responses,
                     request_body,

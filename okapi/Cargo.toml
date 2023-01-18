@@ -2,7 +2,7 @@
 name = "revolt_okapi"
 description = "Structs for OpenAPI (AKA Swagger) documents"
 repository = "https://github.com/revoltchat/okapi"
-version = "0.7.0-rc.1"
+version = "0.9.0"
 authors = ["Graham Esau <gesau@hotmail.co.uk>"]
 edition = "2018"
 license = "MIT"

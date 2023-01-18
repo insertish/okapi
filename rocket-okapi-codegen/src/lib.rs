@@ -22,7 +22,7 @@ use syn::Ident;
 /// the return type implements `OpenApiResponder`.
 /// ### Example
 /// ```rust,ignore
-/// use rocket_okapi::openapi;
+/// use revolt_rocket_okapi::openapi;
 /// use rocket::get;
 ///
 /// #[openapi]
@@ -42,7 +42,7 @@ pub fn openapi(args: TokenStream, mut input: TokenStream) -> TokenStream {
 /// Generate and return a closure that can be used to generate the routes.
 ///
 /// This closure take 2 arguments:
-/// - `spec_opt`: `Option<rocket_okapi::okapi::openapi3::OpenApi>`
+/// - `spec_opt`: `Option<rocket_okapi::revolt_okapi::openapi3::OpenApi>`
 /// - `settings`: `rocket_okapi::settings::OpenApiSettings`
 ///
 /// It returns `Vec<::rocket::Route>`.
@@ -51,9 +51,9 @@ pub fn openapi(args: TokenStream, mut input: TokenStream) -> TokenStream {
 ///
 /// Example:
 /// ```rust,ignore
-/// let settings = rocket_okapi::settings::OpenApiSettings::new();
-/// let spec = rocket_okapi::openapi_spec![get_message, post_message](settings.clone());
-/// let routes = rocket_okapi::openapi_routes![get_message, post_message](Some(spec), settings);
+/// let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
+/// let spec = revolt_rocket_okapi::openapi_spec![get_message, post_message](settings.clone());
+/// let routes = revolt_rocket_okapi::openapi_routes![get_message, post_message](Some(spec), settings);
 /// ```
 #[proc_macro]
 pub fn openapi_routes(input: TokenStream) -> TokenStream {
@@ -69,12 +69,12 @@ pub fn openapi_routes(input: TokenStream) -> TokenStream {
 /// This closure take 1 argument:
 /// - `settings`: `rocket_okapi::settings::OpenApiSettings`
 ///
-/// It returns `rocket_okapi::okapi::openapi3::OpenApi`.
+/// It returns `rocket_okapi::revolt_okapi::openapi3::OpenApi`.
 ///
 /// Example:
 /// ```rust,ignore
-/// let settings = rocket_okapi::settings::OpenApiSettings::new();
-/// let spec = rocket_okapi::openapi_spec![get_message, post_message](settings);
+/// let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
+/// let spec = revolt_rocket_okapi::openapi_spec![get_message, post_message](settings);
 /// ```
 #[proc_macro]
 pub fn openapi_spec(input: TokenStream) -> TokenStream {
@@ -92,7 +92,7 @@ pub fn openapi_spec(input: TokenStream) -> TokenStream {
 ///
 /// Use:
 /// ```rust,ignore
-/// use rocket_okapi::request::OpenApiFromRequest;
+/// use revolt_rocket_okapi::request::OpenApiFromRequest;
 ///
 /// #[derive(OpenApiFromRequest)]
 /// pub struct MyStructName;
@@ -100,8 +100,8 @@ pub fn openapi_spec(input: TokenStream) -> TokenStream {
 ///
 /// This code is equivalent to:
 /// ```rust,ignore
-/// use rocket_okapi::request::{OpenApiFromRequest, RequestHeaderInput};
-/// use rocket_okapi::gen::OpenApiGenerator;
+/// use revolt_rocket_okapi::request::{OpenApiFromRequest, RequestHeaderInput};
+/// use revolt_rocket_okapi::gen::OpenApiGenerator;
 ///
 /// pub struct MyStructName;
 ///
@@ -110,7 +110,7 @@ pub fn openapi_spec(input: TokenStream) -> TokenStream {
 ///         _gen: &mut OpenApiGenerator,
 ///         _name: String,
 ///         _required: bool,
-///     ) -> rocket_okapi::Result<RequestHeaderInput> {
+///     ) -> revolt_rocket_okapi::Result<RequestHeaderInput> {
 ///         Ok(RequestHeaderInput::None)
 ///     }
 /// }
@@ -123,13 +123,13 @@ pub fn open_api_from_request_derive(input: TokenStream) -> TokenStream {
     let name = &ast.ident;
 
     let gen = quote! {
-        impl<'r> rocket_okapi::request::OpenApiFromRequest<'r> for #name {
+        impl<'r> revolt_rocket_okapi::request::OpenApiFromRequest<'r> for #name {
             fn from_request_input(
-                _gen: &mut rocket_okapi::gen::OpenApiGenerator,
+                _gen: &mut revolt_rocket_okapi::gen::OpenApiGenerator,
                 _name: String,
                 _required: bool,
-            ) -> rocket_okapi::Result<rocket_okapi::request::RequestHeaderInput> {
-                Ok(rocket_okapi::request::RequestHeaderInput::None)
+            ) -> revolt_rocket_okapi::Result<revolt_rocket_okapi::request::RequestHeaderInput> {
+                Ok(revolt_rocket_okapi::request::RequestHeaderInput::None)
             }
         }
     };

@@ -1,11 +1,11 @@
+use revolt_rocket_okapi::revolt_okapi::openapi3::Responses;
+use revolt_rocket_okapi::revolt_okapi::schemars::{self, Map};
+use revolt_rocket_okapi::{gen::OpenApiGenerator, response::OpenApiResponderInner, OpenApiError};
 use rocket::{
     http::{ContentType, Status},
     request::Request,
     response::{self, Responder, Response},
 };
-use rocket_okapi::okapi::openapi3::Responses;
-use rocket_okapi::okapi::schemars::{self, Map};
-use rocket_okapi::{gen::OpenApiGenerator, response::OpenApiResponderInner, OpenApiError};
 
 /// Error messages returned to user
 #[derive(Debug, serde::Serialize, schemars::JsonSchema)]
@@ -21,7 +21,7 @@ pub struct Error {
 
 impl OpenApiResponderInner for Error {
     fn responses(_generator: &mut OpenApiGenerator) -> Result<Responses, OpenApiError> {
-        use rocket_okapi::okapi::openapi3::{RefOr, Response as OpenApiReponse};
+        use revolt_rocket_okapi::revolt_okapi::openapi3::{RefOr, Response as OpenApiReponse};
 
         let mut responses = Map::new();
         responses.insert(

@@ -9,11 +9,11 @@ pub fn create_openapi_spec(routes: TokenStream) -> Result<TokenStream2> {
     let paths = <Punctuated<Path, Comma>>::parse_terminated.parse(routes)?;
     let add_operations = create_add_operations(paths);
     Ok(quote! {
-        |settings: &::rocket_okapi::settings::OpenApiSettings| -> ::rocket_okapi::okapi::openapi3::OpenApi {
-            let mut gen = ::rocket_okapi::gen::OpenApiGenerator::new(settings);
+        |settings: &::revolt_rocket_okapi::settings::OpenApiSettings| -> ::revolt_rocket_okapi::revolt_okapi::openapi3::OpenApi {
+            let mut gen = ::revolt_rocket_okapi::gen::OpenApiGenerator::new(settings);
             #add_operations
             let mut spec = gen.into_openapi();
-            let mut info = ::rocket_okapi::okapi::openapi3::Info {
+            let mut info = ::revolt_rocket_okapi::revolt_okapi::openapi3::Info {
                 title: env!("CARGO_PKG_NAME").to_owned(),
                 version: env!("CARGO_PKG_VERSION").to_owned(),
                 ..Default::default()
@@ -22,14 +22,14 @@ pub fn create_openapi_spec(routes: TokenStream) -> Result<TokenStream2> {
                 info.description = Some(env!("CARGO_PKG_DESCRIPTION").to_owned());
             }
             if !env!("CARGO_PKG_REPOSITORY").is_empty() {
-                info.contact = Some(::rocket_okapi::okapi::openapi3::Contact{
+                info.contact = Some(::revolt_rocket_okapi::revolt_okapi::openapi3::Contact{
                     name: Some("Repository".to_owned()),
                     url: Some(env!("CARGO_PKG_REPOSITORY").to_owned()),
                     ..Default::default()
                 });
             }
             if !env!("CARGO_PKG_HOMEPAGE").is_empty() {
-                info.contact = Some(::rocket_okapi::okapi::openapi3::Contact{
+                info.contact = Some(::revolt_rocket_okapi::revolt_okapi::openapi3::Contact{
                     name: Some("Homepage".to_owned()),
                     url: Some(env!("CARGO_PKG_HOMEPAGE").to_owned()),
                     ..Default::default()

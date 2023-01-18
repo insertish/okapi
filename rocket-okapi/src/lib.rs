@@ -25,8 +25,8 @@
 //! ```rust, no_run
 //! use rocket::get;
 //! use rocket::serde::json::Json;
-//! use rocket_okapi::{openapi, openapi_get_routes, JsonSchema};
-//! use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
+//! use revolt_rocket_okapi::{openapi, openapi_get_routes, JsonSchema};
+//! use revolt_rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
 //!
 //! #[derive(serde::Serialize, JsonSchema)]
 //! struct Response {
@@ -42,7 +42,7 @@
 //! }
 //!
 //! fn get_docs() -> SwaggerUIConfig {
-//!     use rocket_okapi::settings::UrlObject;
+//!     use revolt_rocket_okapi::settings::UrlObject;
 //!
 //!     SwaggerUIConfig {
 //!         url: "/my_resource/openapi.json".to_string(),
@@ -156,21 +156,21 @@ macro_rules! mount_endpoints_and_merged_docs {
      $($path:expr => $route_and_docs:expr),* $(,)*) => {{
         let base_path = $base_path.to_string();
         assert!(base_path == "/" || !base_path.ends_with("/"), "`base_path` should not end with an `/`.");
-        let mut openapi_list: Vec<(_, rocket_okapi::okapi::openapi3::OpenApi)> = Vec::new();
+        let mut openapi_list: Vec<(_, revolt_rocket_okapi::revolt_okapi::openapi3::OpenApi)> = Vec::new();
         $({
             let (routes, openapi) = $route_and_docs;
             $rocket_builder = $rocket_builder.mount(format!("{}{}", base_path, $path), routes);
             openapi_list.push(($path, openapi));
         })*
         // Combine all OpenApi documentation into one struct.
-        let openapi_docs = match rocket_okapi::okapi::merge::marge_spec_list(&openapi_list){
+        let openapi_docs = match revolt_rocket_okapi::revolt_okapi::merge::marge_spec_list(&openapi_list){
             Ok(docs) => docs,
             Err(err) => panic!("Could not merge OpenAPI spec: {}", err),
         };
         // Add OpenApi route
         $rocket_builder = $rocket_builder.mount(
             $base_path,
-            vec![rocket_okapi::get_openapi_route(
+            vec![revolt_rocket_okapi::get_openapi_route(
                 openapi_docs,
                 &$openapi_settings,
             )],
@@ -187,7 +187,7 @@ macro_rules! mount_endpoints_and_merged_docs {
 /// Example:
 /// ```rust,ignore
 /// use revolt_okapi::openapi3::OpenApi;
-/// let settings = rocket_okapi::settings::OpenApiSettings::new();
+/// let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
 /// let routes: Vec<rocket::Route> =
 ///     openapi_get_routes![settings: create_message, get_message];
 /// ```
@@ -226,7 +226,7 @@ macro_rules! openapi_get_routes {
 /// Example:
 /// ```rust,ignore
 /// use revolt_okapi::openapi3::OpenApi;
-/// let settings = rocket_okapi::settings::OpenApiSettings::new();
+/// let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
 /// let (routes, spec): (Vec<rocket::Route>, OpenApi) =
 ///     openapi_get_routes_spec![settings: create_message, get_message];
 /// ```
@@ -241,15 +241,15 @@ macro_rules! openapi_get_routes_spec {
     // With settings
     ($settings:ident :
      $($route:expr),* $(,)*) => {{
-        let spec = rocket_okapi::openapi_spec![$($route),*](&$settings);
-        let routes = rocket_okapi::openapi_routes![$($route),*](None, &$settings);
+        let spec = revolt_rocket_okapi::openapi_spec![$($route),*](&$settings);
+        let routes = revolt_rocket_okapi::openapi_routes![$($route),*](None, &$settings);
         (routes, spec)
     }};
 
     // Without settings
     ($($route:expr),* $(,)*) => {{
-        let settings = rocket_okapi::settings::OpenApiSettings::new();
-        rocket_okapi::openapi_get_routes_spec![settings: $($route),*]
+        let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
+        revolt_rocket_okapi::openapi_get_routes_spec![settings: $($route),*]
     }};
 }
 
@@ -261,7 +261,7 @@ macro_rules! openapi_get_routes_spec {
 /// Example:
 /// ```rust,ignore
 /// use revolt_okapi::openapi3::OpenApi;
-/// let settings = rocket_okapi::settings::OpenApiSettings::new();
+/// let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
 /// let spec: OpenApi = openapi_get_spec![settings: create_message, get_message];
 /// ```
 /// Or
@@ -274,13 +274,13 @@ macro_rules! openapi_get_spec {
     // With settings
     ($settings:ident :
      $($route:expr),* $(,)*) => {{
-        let spec = rocket_okapi::openapi_spec![$($route),*](&$settings);
+        let spec = revolt_rocket_okapi::openapi_spec![$($route),*](&$settings);
         spec
     }};
 
     // Without settings
     ($($route:expr),* $(,)*) => {{
-        let settings = rocket_okapi::settings::OpenApiSettings::new();
-        rocket_okapi::openapi_get_spec![settings: $($route),*]
+        let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
+        revolt_rocket_okapi::openapi_get_spec![settings: $($route),*]
     }};
 }

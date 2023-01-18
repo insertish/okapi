@@ -1,17 +1,17 @@
 //! ------ OpenID Connect ------
 
+use revolt_rocket_okapi::revolt_okapi::openapi3::{
+    Object, SecurityRequirement, SecurityScheme, SecuritySchemeData,
+};
+use revolt_rocket_okapi::{
+    gen::OpenApiGenerator,
+    openapi,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+};
 use rocket::serde::json::Json;
 use rocket::{
     get,
     request::{self, FromRequest, Outcome},
-};
-use rocket_okapi::okapi::openapi3::{
-    Object, SecurityRequirement, SecurityScheme, SecuritySchemeData,
-};
-use rocket_okapi::{
-    gen::OpenApiGenerator,
-    openapi,
-    request::{OpenApiFromRequest, RequestHeaderInput},
 };
 
 pub struct OpenId(String);
@@ -34,7 +34,7 @@ impl<'a> OpenApiFromRequest<'a> for OpenId {
         _gen: &mut OpenApiGenerator,
         _name: String,
         _required: bool,
-    ) -> rocket_okapi::Result<RequestHeaderInput> {
+    ) -> revolt_rocket_okapi::Result<RequestHeaderInput> {
         // Setup global requirement for Security scheme
         let security_scheme = SecurityScheme {
             description: Some(

@@ -5,7 +5,7 @@ use rocket::{
     get,
     request::{self, FromRequest, Outcome},
 };
-use rocket_okapi::{openapi, request::OpenApiFromRequest};
+use revolt_rocket_okapi::{openapi, request::OpenApiFromRequest};
 
 #[derive(OpenApiFromRequest)]
 pub struct NoSpecialAuthentication;

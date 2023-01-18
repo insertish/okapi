@@ -10,12 +10,12 @@ pub fn parse_routes(routes: TokenStream) -> Result<TokenStream2> {
     let paths = <Punctuated<Path, Comma>>::parse_terminated.parse(routes)?;
     // This returns a function so the spec does not have to be generated multiple times.
     Ok(quote! {
-        |spec_opt: Option<::rocket_okapi::okapi::openapi3::OpenApi>, settings: &::rocket_okapi::settings::OpenApiSettings|
+        |spec_opt: Option<::revolt_rocket_okapi::revolt_okapi::openapi3::OpenApi>, settings: &::revolt_rocket_okapi::settings::OpenApiSettings|
             -> Vec<::rocket::Route> {
                 let mut routes = ::rocket::routes![#paths];
                 if let Some(spec) = spec_opt {
                     routes.push(
-                        ::rocket_okapi::handlers::OpenApiHandler::new(spec)
+                        ::revolt_rocket_okapi::handlers::OpenApiHandler::new(spec)
                             .into_route(&settings.json_path)
                     );
                 }

@@ -2,5 +2,10 @@
 members = [
     "okapi",
     "rocket-okapi",
-    "rocket-okapi-codegen"
+    "rocket-okapi-codegen",
+    "examples/json-web-api",
+    "examples/custom_schema",
+    "examples/special-types",
+    "examples/secure_request_guard",
+    "examples/streams",
 ]

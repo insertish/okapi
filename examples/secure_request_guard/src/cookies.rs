@@ -1,16 +1,16 @@
 //! ------ Just Cookies (for just 1 route/endpoint) ------
 
+use revolt_rocket_okapi::revolt_okapi::openapi3::{Object, Parameter, ParameterValue};
+use revolt_rocket_okapi::{
+    gen::OpenApiGenerator,
+    openapi,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+};
 use rocket::outcome::IntoOutcome;
 use rocket::serde::json::Json;
 use rocket::{
     get,
     request::{self, FromRequest},
-};
-use rocket_okapi::okapi::openapi3::{Object, Parameter, ParameterValue};
-use rocket_okapi::{
-    gen::OpenApiGenerator,
-    openapi,
-    request::{OpenApiFromRequest, RequestHeaderInput},
 };
 
 pub struct CookieAuth(String);
@@ -36,7 +36,7 @@ impl<'a> OpenApiFromRequest<'a> for CookieAuth {
         gen: &mut OpenApiGenerator,
         _name: String,
         required: bool,
-    ) -> rocket_okapi::Result<RequestHeaderInput> {
+    ) -> revolt_rocket_okapi::Result<RequestHeaderInput> {
         let schema = gen.json_schema::<String>();
         Ok(RequestHeaderInput::Parameter(Parameter {
             name: "user_id".to_owned(),

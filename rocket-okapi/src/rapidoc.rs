@@ -1,7 +1,7 @@
 //! ### Example
 //! ```rust,no_run
-//! use rocket_okapi::settings::UrlObject;
-//! use rocket_okapi::rapidoc::{make_rapidoc, RapiDocConfig, GeneralConfig};
+//! use revolt_rocket_okapi::settings::UrlObject;
+//! use revolt_rocket_okapi::rapidoc::{make_rapidoc, RapiDocConfig, GeneralConfig};
 //!
 //! fn get_rapi_docs() -> RapiDocConfig {
 //!     RapiDocConfig {
@@ -51,7 +51,7 @@ macro_rules! static_file {
 ///
 /// ```rust
 /// use std::collections::HashMap;
-/// use rocket_okapi::hash_map;
+/// use revolt_rocket_okapi::hash_map;
 ///
 /// let my_hash_map = hash_map!{
 ///     "token_name".to_owned() => "CREATURE",
