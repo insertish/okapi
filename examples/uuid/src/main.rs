@@ -1,6 +1,6 @@
+use revolt_rocket_okapi::settings::UrlObject;
+use revolt_rocket_okapi::{openapi, openapi_get_routes, rapidoc::*, swagger_ui::*};
 use rocket::{get, post, serde::json::Json, serde::uuid::Uuid};
-use rocket_okapi::settings::UrlObject;
-use rocket_okapi::{openapi, openapi_get_routes, rapidoc::*, swagger_ui::*};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 

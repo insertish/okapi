@@ -173,7 +173,7 @@ impl<'r> Responder<'r, 'static> for MyError {
 
 impl OpenApiResponderInner for MyError {
     fn responses(gen: &mut OpenApiGenerator) -> Result<Responses, OpenApiError> {
-        use okapi::openapi3::RefOr;
+        use revolt_okapi::openapi3::RefOr;
         Ok(Responses {
             responses: okapi::map! {
                 "400".to_owned() => RefOr::Object(bad_request_response(gen)),

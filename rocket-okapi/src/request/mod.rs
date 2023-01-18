@@ -7,7 +7,9 @@ mod from_segments_impls;
 
 use super::gen::OpenApiGenerator;
 use super::Result;
-use okapi::openapi3::{Parameter, RequestBody, Responses, SecurityRequirement, SecurityScheme};
+use revolt_okapi::openapi3::{
+    Parameter, RequestBody, Responses, SecurityRequirement, SecurityScheme,
+};
 
 /// Expose this to the public to be use when manually implementing a
 /// [Form Guard](https://api.rocket.rs/master/rocket/form/trait.FromForm.html).
@@ -83,7 +85,7 @@ pub enum RequestHeaderInput {
 }
 
 // Re-export derive trait here for convenience.
-pub use rocket_okapi_codegen::OpenApiFromRequest;
+pub use revolt_rocket_okapi_codegen::OpenApiFromRequest;
 
 /// Trait that needs to be implemented for all types that implement
 /// [`FromRequest`](rocket::request::FromRequest).

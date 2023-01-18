@@ -1,4 +1,4 @@
-use okapi::merge::MergeError;
+use revolt_okapi::merge::MergeError;
 use std::error::Error;
 use std::fmt;
 

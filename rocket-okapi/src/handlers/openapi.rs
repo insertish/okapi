@@ -1,4 +1,4 @@
-use okapi::openapi3::{OpenApi, Server};
+use revolt_okapi::openapi3::{OpenApi, Server};
 use rocket::http::Method;
 use rocket::response::content::RawJson;
 use rocket::route::{Handler, Outcome};
@@ -36,7 +36,7 @@ impl Handler for OpenApiHandler {
         if spec.servers.is_empty() && base_path != "/" {
             spec.servers.push(Server {
                 url: base_path.to_owned(),
-                ..okapi::openapi3::Server::default()
+                ..revolt_okapi::openapi3::Server::default()
             })
         }
 

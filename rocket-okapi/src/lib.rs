@@ -12,7 +12,7 @@
 //! rocket = { version = "0.5.0-rc.1", default-features = false, features = ["json"] }
 //! schemars = "0.8"
 //! okapi = { version = "0.6.0-alpha-1" }
-//! rocket_okapi = { version = "0.8.0-alpha-1", features = ["swagger"] }
+//! revolt_rocket_okapi = { version = "0.8.0-alpha-1", features = ["swagger"] }
 //! ```
 //! To add documentation to a set of endpoints, a couple of steps are required. The request and
 //! response types of the endpoint must implement `JsonSchema`. Secondly, the function must be
@@ -99,8 +99,8 @@ pub mod util;
 
 pub use error::*;
 /// Re-export Okapi
-pub use okapi;
-pub use rocket_okapi_codegen::*;
+pub use revolt_okapi;
+pub use revolt_rocket_okapi_codegen::*;
 pub use schemars::JsonSchema;
 
 /// Contains information about an endpoint.
@@ -110,14 +110,14 @@ pub struct OperationInfo {
     /// The HTTP Method of this endpoint.
     pub method: rocket::http::Method,
     /// Contains information to be showed in the documentation about this endpoint.
-    pub operation: okapi::openapi3::Operation,
+    pub operation: revolt_okapi::openapi3::Operation,
 }
 
 /// Convert OpenApi object to routable endpoint.
 ///
 /// Used to serve an `OpenApi` object as an `openapi.json` file in Rocket.
 pub fn get_openapi_route(
-    spec: okapi::openapi3::OpenApi,
+    spec: revolt_okapi::openapi3::OpenApi,
     settings: &settings::OpenApiSettings,
 ) -> rocket::Route {
     handlers::OpenApiHandler::new(spec).into_route(&settings.json_path)
@@ -186,14 +186,14 @@ macro_rules! mount_endpoints_and_merged_docs {
 ///
 /// Example:
 /// ```rust,ignore
-/// use okapi::openapi3::OpenApi;
+/// use revolt_okapi::openapi3::OpenApi;
 /// let settings = rocket_okapi::settings::OpenApiSettings::new();
 /// let routes: Vec<rocket::Route> =
 ///     openapi_get_routes![settings: create_message, get_message];
 /// ```
 /// Or
 /// ```rust,ignore
-/// use okapi::openapi3::OpenApi;
+/// use revolt_okapi::openapi3::OpenApi;
 /// let routes: Vec<rocket::Route> =
 ///     openapi_get_routes![create_message, get_message];
 /// ```
@@ -202,15 +202,15 @@ macro_rules! openapi_get_routes {
     // With settings
     ($settings:ident :
      $($route:expr),* $(,)*) => {{
-        let spec = rocket_okapi::openapi_spec![$($route),*](&$settings);
-        let routes = rocket_okapi::openapi_routes![$($route),*](Some(spec), &$settings);
+        let spec = revolt_rocket_okapi::openapi_spec![$($route),*](&$settings);
+        let routes = revolt_rocket_okapi::openapi_routes![$($route),*](Some(spec), &$settings);
         routes
     }};
 
     // Without settings
     ($($route:expr),* $(,)*) => {{
-        let settings = rocket_okapi::settings::OpenApiSettings::new();
-        rocket_okapi::openapi_get_routes![settings: $($route),*]
+        let settings = revolt_rocket_okapi::settings::OpenApiSettings::new();
+        revolt_rocket_okapi::openapi_get_routes![settings: $($route),*]
     }};
 }
 
@@ -225,14 +225,14 @@ macro_rules! openapi_get_routes {
 ///
 /// Example:
 /// ```rust,ignore
-/// use okapi::openapi3::OpenApi;
+/// use revolt_okapi::openapi3::OpenApi;
 /// let settings = rocket_okapi::settings::OpenApiSettings::new();
 /// let (routes, spec): (Vec<rocket::Route>, OpenApi) =
 ///     openapi_get_routes_spec![settings: create_message, get_message];
 /// ```
 /// Or
 /// ```rust,ignore
-/// use okapi::openapi3::OpenApi;
+/// use revolt_okapi::openapi3::OpenApi;
 /// let (routes, spec): (Vec<rocket::Route>, OpenApi) =
 ///     openapi_get_routes_spec![create_message, get_message];
 /// ```
@@ -260,13 +260,13 @@ macro_rules! openapi_get_routes_spec {
 ///
 /// Example:
 /// ```rust,ignore
-/// use okapi::openapi3::OpenApi;
+/// use revolt_okapi::openapi3::OpenApi;
 /// let settings = rocket_okapi::settings::OpenApiSettings::new();
 /// let spec: OpenApi = openapi_get_spec![settings: create_message, get_message];
 /// ```
 /// Or
 /// ```rust,ignore
-/// use okapi::openapi3::OpenApi;
+/// use revolt_okapi::openapi3::OpenApi;
 /// let spec: OpenApi = openapi_get_spec![create_message, get_message];
 /// ```
 #[macro_export]

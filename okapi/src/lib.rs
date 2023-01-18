@@ -15,8 +15,8 @@ pub use schemars;
 /// # Examples
 ///
 /// ```rust
-/// use okapi::Map;
-/// use okapi::map;
+/// use revolt_okapi::Map;
+/// use revolt_okapi::map;
 ///
 /// let my_map = map!{
 ///     "user:read".to_owned() => "Ability to read user data".to_owned(),

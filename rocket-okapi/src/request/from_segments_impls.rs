@@ -1,6 +1,6 @@
 use super::OpenApiFromSegments;
 use crate::gen::OpenApiGenerator;
-use okapi::openapi3::{Object, Parameter, ParameterValue};
+use revolt_okapi::openapi3::{Object, Parameter, ParameterValue};
 use schemars::JsonSchema;
 
 type Result = crate::Result<Parameter>;

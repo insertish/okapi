@@ -1,5 +1,5 @@
 use crate::gen::OpenApiGenerator;
-use okapi::openapi3::{Object, Parameter, ParameterValue};
+use revolt_okapi::openapi3::{Object, Parameter, ParameterValue};
 use schemars::schema::{InstanceType, Schema, SchemaObject, SingleOrVec};
 use schemars::JsonSchema;
 

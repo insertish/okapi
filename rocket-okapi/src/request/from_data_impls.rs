@@ -1,6 +1,6 @@
 use super::OpenApiFromData;
 use crate::gen::OpenApiGenerator;
-use okapi::{
+use revolt_okapi::{
     openapi3::{MediaType, RequestBody},
     Map,
 };
@@ -28,7 +28,7 @@ macro_rules! fn_request_body {
                 map
             },
             required: true,
-            ..okapi::openapi3::RequestBody::default()
+            ..revolt_okapi::openapi3::RequestBody::default()
         })
     }};
 }

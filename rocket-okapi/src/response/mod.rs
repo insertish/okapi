@@ -2,7 +2,7 @@ mod responder_impls;
 
 use super::gen::OpenApiGenerator;
 use super::Result;
-use okapi::openapi3::Responses;
+use revolt_okapi::openapi3::Responses;
 
 /// See `OpenApiResponderInner`. This is a wrapper around
 /// `OpenApiResponderInner` that ensures the implementor is a

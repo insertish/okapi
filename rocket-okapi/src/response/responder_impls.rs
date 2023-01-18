@@ -7,7 +7,7 @@ use crate::{
         set_content_type, set_status_code,
     },
 };
-use okapi::openapi3::Responses;
+use revolt_okapi::openapi3::Responses;
 use rocket::serde::json::{Json, Value};
 use schemars::JsonSchema;
 use serde::Serialize;
@@ -293,7 +293,7 @@ where
             &mut responses,
             200,
             "text/plain; charset=utf-8",
-            okapi::openapi3::MediaType::default(),
+            revolt_okapi::openapi3::MediaType::default(),
         )?;
         Ok(responses)
     }
@@ -309,7 +309,7 @@ impl<S> OpenApiResponderInner for rocket::response::stream::EventStream<S> {
             &mut responses,
             200,
             "text/event-stream; charset=utf-8",
-            okapi::openapi3::MediaType::default(),
+            revolt_okapi::openapi3::MediaType::default(),
         )?;
         Ok(responses)
     }

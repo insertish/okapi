@@ -1,7 +1,7 @@
 use crate::settings::OpenApiSettings;
 use crate::OperationInfo;
-use okapi::openapi3::{Components, OpenApi, Operation, PathItem, RefOr, SecurityScheme};
-use okapi::{Map, MapEntry};
+use revolt_okapi::openapi3::{Components, OpenApi, Operation, PathItem, RefOr, SecurityScheme};
+use revolt_okapi::{Map, MapEntry};
 use rocket::http::Method;
 use schemars::gen::SchemaGenerator;
 use schemars::schema::SchemaObject;

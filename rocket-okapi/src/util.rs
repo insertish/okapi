@@ -1,6 +1,6 @@
 use crate::{OpenApiError, Result};
-use okapi::openapi3::{MediaType, RefOr, Response, Responses, SchemaObject};
-use okapi::Map;
+use revolt_okapi::openapi3::{MediaType, RefOr, Response, Responses, SchemaObject};
+use revolt_okapi::Map;
 
 // FIXME this whole file is a huge mess...
 
