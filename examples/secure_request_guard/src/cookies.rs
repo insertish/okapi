@@ -6,6 +6,7 @@ use revolt_rocket_okapi::{
     openapi,
     request::{OpenApiFromRequest, RequestHeaderInput},
 };
+use rocket::http::Status;
 use rocket::outcome::IntoOutcome;
 use rocket::serde::json::Json;
 use rocket::{
@@ -27,7 +28,7 @@ impl<'a> FromRequest<'a> for CookieAuth {
             .get_private("user_id") // Requires "secrets" feature flag
             .and_then(|cookie| cookie.value().parse().ok())
             .map(CookieAuth)
-            .or_forward(())
+            .or_forward(Status::Unauthorized)
     }
 }
 

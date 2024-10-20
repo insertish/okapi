@@ -7,6 +7,7 @@ use syn::spanned::Spanned;
 use syn::{Attribute, Meta, MetaList, NestedMeta};
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct Route {
     pub method: Method,
     pub origin: Origin<'static>,
